@@ -45,8 +45,11 @@ export default function Contact() {
 
   const contactMutation = useMutation({
     mutationFn: async (values: z.infer<typeof contactFormSchema>) => {
-      const response = await apiRequest("POST", "/api/contact", values);
-      return response.json();
+      // For Vercel deployment, we're simulating a successful form submission
+      // In a real-world scenario, you would connect this to a serverless function
+      // or use a form service like Formspree, EmailJS, etc.
+      console.log("Form submission values:", values);
+      return { success: true };
     },
     onSuccess: () => {
       toast({
