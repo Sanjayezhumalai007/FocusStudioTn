@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
@@ -44,12 +44,17 @@ export default function Header({ activeSection }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/95 shadow-sm py-3" : "bg-white/90 py-4"
+        scrolled 
+          ? "bg-white/95 backdrop-blur-sm shadow-sm py-3" 
+          : "bg-transparent py-4"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
-        <a href="#home" className="flex items-center" onClick={() => scrollToSection("#home")}>
-          <span className="heading text-2xl font-bold text-black">
+        <a href="#home" className="flex items-center gap-2" onClick={() => scrollToSection("#home")}>
+          <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center">
+            <Camera className="h-5 w-5 text-white" />
+          </div>
+          <span className="heading text-2xl font-bold">
             Focus<span className="text-primary">Studio</span>
           </span>
         </a>
@@ -64,7 +69,7 @@ export default function Header({ activeSection }: HeaderProps) {
                 e.preventDefault();
                 scrollToSection(item.href);
               }}
-              className={`nav-link text-black font-medium transition-colors hover:text-primary ${
+              className={`nav-link font-medium transition-colors hover:text-primary ${
                 activeSection === item.href.substring(1) ? "active text-primary" : ""
               }`}
             >
@@ -72,6 +77,21 @@ export default function Header({ activeSection }: HeaderProps) {
             </a>
           ))}
         </nav>
+
+        {/* Contact Button (Desktop) */}
+        <div className="hidden md:block">
+          <Button 
+            className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm shadow-primary/30"
+            asChild
+          >
+            <a href="#contact" onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("#contact");
+            }}>
+              Book a Session
+            </a>
+          </Button>
+        </div>
 
         {/* Mobile Menu Button */}
         <Button
@@ -91,7 +111,7 @@ export default function Header({ activeSection }: HeaderProps) {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <nav className="md:hidden py-4 px-4 bg-white border-t">
+        <nav className="md:hidden py-4 px-4 bg-white/95 backdrop-blur-sm border-t shadow-md">
           <div className="flex flex-col space-y-4">
             {menuItems.map((item) => (
               <a
@@ -101,13 +121,24 @@ export default function Header({ activeSection }: HeaderProps) {
                   e.preventDefault();
                   scrollToSection(item.href);
                 }}
-                className={`text-black font-medium py-2 transition-colors hover:text-primary ${
+                className={`font-medium py-2 transition-colors hover:text-primary ${
                   activeSection === item.href.substring(1) ? "text-primary" : ""
                 }`}
               >
                 {item.label}
               </a>
             ))}
+            <Button 
+              className="rounded-full bg-primary hover:bg-primary/90 text-white w-full mt-2"
+              asChild
+            >
+              <a href="#contact" onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#contact");
+              }}>
+                Book a Session
+              </a>
+            </Button>
           </div>
         </nav>
       )}
